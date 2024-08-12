@@ -28,13 +28,14 @@
 
 CHIP ALU {
     IN  
-        x[16], y[16],  // 16-bit inputs        
+        x[16], y[16], z[16], // 16-bit inputs        
         zx, // zero the x input?
         nx, // negate the x input?
         zy, // zero the y input?
         ny, // negate the y input?
         f,  // compute (out = x + y) or (out = x & y)?
-        no; // negate the out output
+        no, // negate the out output
+        sel[2];
     OUT 
         out[16], // 16-bit output
         zr,      // if (out == 0) equals 1, else 0
@@ -46,8 +47,8 @@ CHIP ALU {
         Mux16(a=y, b=false, sel=zy, out=y0);
 
         // Obtenemos el negado de lo que zx y zy nos provee, para que en caso de nx o ny sea positivo, hacer que la entrada sea ese nuevo valor
-        Neg16(in=x0, out=xn);
-        Neg16(in=y0, out=yn);
+        Not16(in=x0, out=xn);
+        Not16(in=y0, out=yn);
 
         // verifico si nx o ny es positivo para hacer el respectivo cambio a lo que nos pasó zx o zy
         Mux16(a=x0, b=xn, sel=nx, out=x1);
@@ -61,9 +62,21 @@ CHIP ALU {
 
         // ahora, segun lo que obtenemos de la operacion con el bit de control f, el cual llamamos out1, vamos a obtener su valor negado, para posteriormente
         // con el mux verificar si no es 1, negar ese out1, y en caso de ser 0, dejarlo como está
-        Neg16(in=out1, out=notOut);
-        Mux16(a=out1, b=notOut, sel=no, out=outf);
-        
+        Not16(in=out1, out=notOut);
+        Mux16(a=out1, b=notOut, sel=no, out=out00);
+
+
+        //OPERACIONES CON Z
+        //Add16(a=out00, b=z, out=out01);
+        //Resta16(a=out00,b=z,out=out10);
+
+        Not16(in=z, out= zn);
+
+        Mux16(a=zn,b=z,sel=sel[0],out=z1);
+        Add16(a=out00,b=z1, out=outf)
+
+
+        // FLAGS
         // Verfico si la salida es negativa, para prender la flag de ng
         Sign(in=outf, out=ng);
 
