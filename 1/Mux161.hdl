@@ -1,0 +1,10 @@
+CHIP Mux161 {
+    IN a[16], b[16], sel;
+    OUT out[16];
+
+    PARTS:
+        Not(in=sel, out=notsel);
+        And161(a=a, sel=notsel, out=checka);
+        And161(a=b, sel=sel, out=checkb);
+        Or16(a=checka, b=checkb, out=out);  
+}

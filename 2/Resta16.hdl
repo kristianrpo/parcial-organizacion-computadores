@@ -1,0 +1,8 @@
+CHIP Resta16 {
+    IN a[16], b[16];
+    OUT out[16];
+
+    PARTS:
+        Neg16(in=b, out=negB);
+        Add16(a=a, b=negB, out=out);
+}
