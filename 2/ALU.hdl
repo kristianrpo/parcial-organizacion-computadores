@@ -63,27 +63,26 @@ CHIP ALU {
         // ahora, segun lo que obtenemos de la operacion con el bit de control f, el cual llamamos out1, vamos a obtener su valor negado, para posteriormente
         // con el mux verificar si no es 1, negar ese out1, y en caso de ser 0, dejarlo como está
         Not16(in=out1, out=notOut);
-        Mux16(a=out1, b=notOut, sel=no, out=out00);
+        Mux16(a=out1, b=notOut, sel=no, out=outf);
 
 
         //OPERACIONES CON Z
         //Add16(a=out00, b=z, out=out01);
         //Resta16(a=out00,b=z,out=out10);
 
-        Not16(in=z, out= zn);
-
-        Mux16(a=zn,b=z,sel=sel[0],out=z1);
-        Add16(a=out00,b=z1, out=outf)
-
+        Add16(a=outf,b=z,out=outAdd);
+        Resta16(a=outf, b=z, out=outSub);
+        Opz(sel=sel,sub=outSub,add=outAdd,noChanges=outf, out=outff);
+        
 
         // FLAGS
         // Verfico si la salida es negativa, para prender la flag de ng
-        Sign(in=outf, out=ng);
+        Sign(in=outff, out=ng);
 
         // Verifico si la salida son 0s para prender la flag de zr
-        Or16Way(in=outf, out=orOut);
+        Or16Way(in=outff, out=orOut);
         Not(in=orOut, out=zr);
 
         // saco el resultado obtenido por la ALU
-        And16(a=outf, b=true, out=out);
+        And16(a=outff, b=true, out=out);
 }
