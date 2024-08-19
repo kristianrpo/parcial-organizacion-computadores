@@ -1,0 +1,16 @@
+CHIP Opz{
+    IN sel[2],sub[16],add[16],noChanges[16];
+    OUT out[16];
+    
+    PARTS:
+    Or(a=sel[0],b=sel[1], out=outSelector);
+    Mux(a=false, b=true, sel=outSelector, out=flagOperation);
+    And(a=sel[1],b=flagOperation,out=outSub);
+    And(a=sel[0],b=flagOperation,out=outAdd);
+    Nor(a=sel[0],b=flagOperation,out=outNoChanges);
+    And161(a=sub,sel=outSub,out=sub1);
+    And161(a=add,sel=outAdd,out=add1);
+    And161(a=noChanges,sel=outNoChanges,out=noc1);
+    Or16(a=noc1, b=add1, out=outTemp);
+    Or16(a=sub1,b=outTemp, out=out);
+}

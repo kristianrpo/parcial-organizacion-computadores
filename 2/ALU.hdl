@@ -43,47 +43,46 @@ CHIP ALU {
 
     PARTS:
         // Se utiliza a = a la entrada y n = 0000... puesto que en caso de que zx o zy sean positivos, va a convertir la entrada en 0s
-        Mux16(a=x, b=false, sel=zx, out=x0);
-        Mux16(a=y, b=false, sel=zy, out=y0);
+        Mux_final6(a=x, b=false, sel=zx, out=x_zx);
+        Mux_final6(a=y, b=false, sel=zy, out=y_zy);
 
         // Obtenemos el negado de lo que zx y zy nos provee, para que en caso de nx o ny sea positivo, hacer que la entrada sea ese nuevo valor
-        Not16(in=x0, out=xn);
-        Not16(in=y0, out=yn);
+        Not16(in=x_zx, out=x_nx);
+        Not16(in=y_zy, out=y_ny);
 
         // verifico si nx o ny es positivo para hacer el respectivo cambio a lo que nos pasó zx o zy
-        Mux16(a=x0, b=xn, sel=nx, out=x1);
-        Mux16(a=y0, b=yn, sel=ny, out=y1);
+        Mux_final6(a=x_zx, b=x_nx, sel=nx, out=x_final);
+        Mux_final6(a=y_zy, b=y_ny, sel=ny, out=y_final);
 
-        // x1,y1 son nuestros valores actuales, pase lo que pase con zx, zy, nx, ny. Ahora debemos aplicar f, que nos dirá si hacemos una suma o un and
-        // Por lo tanto, hacemos el calculo del and entre x1 y y1, y el caludo de la suma, para posteriormente según el selector arrojar el resultado correspondiente
-        And16(a=x1, b=y1, out=andOut);
-        Add16(a=x1, b=y1, out=addOut);
-        Mux16(a=andOut, b=addOut, sel=f, out=out1);
+        // x_final,y_final son nuestros valores actuales, pase lo que pase con zx, zy, nx, ny. Ahora debemos aplicar f, que nos dirá si hacemos una suma o un and
+        // Por lo tanto, hacemos el calculo del and entre x_final y y_final, y el caludo de la suma, para posteriormente según el selector arrojar el resultado correspondiente
+        And16(a=x_final, b=y_final, out=out_and);
+        Add16(a=x_final, b=y_final, out=out_add);
+        Mux_final6(a=out_and, b=out_add, sel=f, out=out_actual);
 
-        // ahora, segun lo que obtenemos de la operacion con el bit de control f, el cual llamamos out1, vamos a obtener su valor negado, para posteriormente
-        // con el mux verificar si no es 1, negar ese out1, y en caso de ser 0, dejarlo como está
-        Not16(in=out1, out=notOut);
-        Mux16(a=out1, b=notOut, sel=no, out=out00);
+        // ahora, segun lo que obtenemos de la operacion con el bit de control f, el cual llamamos out_actual, vamos a obtener su valor negado, para posteriormente
+        // con el mux verificar si no es 1, negar ese out_actual, y en caso de ser 0, dejarlo como está
+        Not16(in=out_actual, out=out_no);
+        Mux_final6(a=out_actual, b=out_no, sel=no, out=out_final);
 
 
         //OPERACIONES CON Z
         //Add16(a=out00, b=z, out=out01);
-        //Resta16(a=out00,b=z,out=out10);
+        //Resta16(a=out00,b=z,out=out_actual0);
 
-        Not16(in=z, out= zn);
-
-        Mux16(a=zn,b=z,sel=sel[0],out=z1);
-        Add16(a=out00,b=z1, out=outf)
-
+        Add16(a=out_final,b=z,out=out_add_z);
+        Resta16(a=out_final, b=z, out=out_sub_z);
+        Opz(sel=sel,sub=out_sub_z,add=out_add_z,noChanges=out_final, out=out_final_z);
+        
 
         // FLAGS
         // Verfico si la salida es negativa, para prender la flag de ng
-        Sign(in=outf, out=ng);
+        Sign(in=out_final_z, out=ng);
 
         // Verifico si la salida son 0s para prender la flag de zr
-        Or16Way(in=outf, out=orOut);
-        Not(in=orOut, out=zr);
+        Or16Way(in=out_final_z, out=out_16_1);
+        Not(in=out_16_1, out=zr);
 
         // saco el resultado obtenido por la ALU
-        And16(a=outf, b=true, out=out);
+        And16(a=out_final_z, b=true, out=out);
 }
