@@ -1,0 +1,25 @@
+CHIP ALUxyz {
+    IN  
+        xy[16], z[16],  // 16-bit inputs       
+        xyn, // negate the xy input
+	no; // negate the output
+    OUT 
+        out[16], // 16-bit output
+        zr,      // if (out == 0) equals 1, else 0
+        ng;      // if (out < 0)  equals 1, else 0
+    PARTS:
+        Not16(in=xy, out=xynot);
+        Mux16(a=xy, b=xynot, sel=xyn, out=xy1);
+        Add16(a=xy1, b=z, out=out1);
+ 
+        Not16(in=out1, out=notOut);
+        Mux16(a=out1, b=notOut, sel=no, out=outf);
+ 
+        // Verfico si la salida es negativa, para prender la flag de ng
+        Sign(in=outf, out=ng);
+        // Verifico si la salida son 0s para prender la flag de zr
+        Or16Way(in=outf, out=orOut);
+        Not(in=orOut, out=zr);
+        // saco el resultado obtenido por la ALU
+        And16(a=outf, b=true, out=out);
+}
