@@ -2,7 +2,7 @@ CHIP ALUxyz {
     IN  
         xy[16], z[16],  // 16-bit inputs       
         xyn, // negate the xy input
-	no; // negate the output
+	    no; // negate the output
     OUT 
         out[16], // 16-bit output
         zr,      // if (out == 0) equals 1, else 0

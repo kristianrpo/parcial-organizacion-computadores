@@ -36,9 +36,7 @@ CHIP ALUxy {
         f,  // compute (out = x + y) or (out = x & y)?
         no; // negate the out output
     OUT 
-        out[16], // 16-bit output
-        zr,      // if (out == 0) equals 1, else 0
-        ng;      // if (out < 0)  equals 1, else 0
+        out[16]; // 16-bit output
  
     PARTS:
         // Se utiliza a = a la entrada y n = 0000... puesto que en caso de que zx o zy sean positivos, va a convertir la entrada en 0s
@@ -63,12 +61,6 @@ CHIP ALUxy {
         // con el mux verificar si no es 1, negar ese out1, y en caso de ser 0, dejarlo como está
         Not16(in=out1, out=notOut);
         Mux16(a=out1, b=notOut, sel=no, out=outf);
-        // Verfico si la salida es negativa, para prender la flag de ng
-        Sign(in=outf, out=ng);
- 
-        // Verifico si la salida son 0s para prender la flag de zr
-        Or16Way(in=outf, out=orOut);
-        Not(in=orOut, out=zr);
  
         // saco el resultado obtenido por la ALU
         And16(a=outf, b=true, out=out);
