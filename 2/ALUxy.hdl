@@ -60,8 +60,5 @@ CHIP ALUxy {
         // ahora, segun lo que obtenemos de la operacion con el bit de control f, el cual llamamos out1, vamos a obtener su valor negado, para posteriormente
         // con el mux verificar si no es 1, negar ese out1, y en caso de ser 0, dejarlo como está
         Not16(in=out1, out=notOut);
-        Mux16(a=out1, b=notOut, sel=no, out=outf);
- 
-        // saco el resultado obtenido por la ALU
-        And16(a=outf, b=true, out=out);
+        Mux16(a=out1, b=notOut, sel=no, out=out);
 }
