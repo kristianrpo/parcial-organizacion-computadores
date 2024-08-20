@@ -107,7 +107,7 @@ Esta sub-ALU se encarga de procesar las operaciones relacionadas con las entrada
 2. **Operaciones AND y ADD**: Se calculan ambas operaciones de manera predeterminada. Luego, un multiplexor (MUX) selecciona cuál será la salida en función del bit `f`.
 3. **Negación de la Salida**: Si `no` es activo, la salida seleccionada es invertida.
 
-### ALUxyz
+### Detalle de implementacion para operaciones con el tercer registro (ALUxyz)
 
 Esta sub-ALU toma la salida de **ALUxy** y la combina con la entrada Z. Aquí se decide si se niega la salida de **ALUxy** y si se sumará o restará Z, dependiendo del valor de `sel`. Además, se activan los indicadores de estado `zr` y `ng`.
 
