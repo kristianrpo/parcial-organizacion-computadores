@@ -135,9 +135,33 @@ Esta sub-ALU toma la salida de **ALUxy** y la combina con la entrada Z. Aquí se
 3. **Posible Latencia**: La segmentación de operaciones a través de múltiples sub-ALUs podría incrementar la latencia en el procesamiento de ciertas operaciones, lo que podría afectar el rendimiento en aplicaciones donde la velocidad es crítica.
 
 
-## Analisis de Ventajas y Desventajas de Incluir el Tercer Registro
-## ¿Qué Implementación es Mejor?
+## Análisis de Ventajas y Desventajas de Incluir el Tercer Registro
+### Ventajas
+1. **Mayor Capacidad y Flexibilidad Operacional**: La inclusión del tercer registro (Z) permite realizar operaciones aritméticas más complejas, como sumas y restas con tres operandos, que no serían posibles en una ALU tradicional de dos entradas. Esto incrementa la capacidad de procesamiento y la versatilidad del circuito, siendo especialmente útil en aplicaciones avanzadas donde es necesario combinar múltiples valores de manera simultánea.
+2. **Menor Acceso a Memoria**: Al permitir operaciones directas con tres operandos, se reduce la necesidad de acceder a la memoria para cargar o almacenar resultados intermedios, lo que puede mejorar la eficiencia y el rendimiento.
+3. **Optimización de Código**: Una ALU de mayor capacidad puede facilitar la creación de circuitos más eficientes al reducir la cantidad de instrucciones necesarias para realizar operaciones complejas. Esto permite que el código sea más simple y directo.
 
+### Desventajas
+1. **Complejidad Aumentada en el Diseño**: La inclusión de un tercer registro introduce una complejidad adicional en el diseño de la ALU. Esto se traduce en un aumento en el número de compuertas lógicas necesarias, como AND, OR, y NOR, que gestionan las operaciones con el tercer registro. Esta complejidad puede dificultar el aprendizaje y la comprensión del funcionamiento de la ALU.
+2. **Incompatibilidad con Diseños Clásicos**: La introducción del tercer registro puede desalinearse con los principios de diseño tradicionales de las ALUs, haciendo que el circuito sea menos intuitivo para quienes están familiarizados con implementaciones más simples. 
+3. **Rendimiento Potencialmente Afectado**: Debido a la necesidad de realizar una mayor cantidad de operaciones, se podría incrementar la latencia en el proceso de cálculo.
+   
+### Conclusión
+La inclusión de un tercer registro en la ALU ofrece ventajas significativas al permitir operaciones aritméticas más complejas, reducir la necesidad de acceso a memoria y optimizar el código, lo que se traduce en un procesamiento más eficiente y versátil. Sin embargo, este diseño también conlleva desventajas, como una mayor complejidad en el diseño del circuito, potencial incompatibilidad con enfoques tradicionales y un posible incremento en la latencia del proceso de cálculo.
+
+
+## ¿Qué Implementación es Mejor?
+### Comparativa entre ambas implementaciones
+|  Aspecto  | Implementación 1 | Implementación 2 |
+| --------- | ---------------- | ---------------- |
+| Cantidad de Compuertas | 25  | 21 |
+| Modularidad | Menor modularidad, mayor complejidad en la gestión del tercer registro (Z) | Mayor modularidad, con sub-ALUs separadas (ALUxy y ALUxyz) que facilitan el diseño y mantenimiento |
+| Rendimiento | Puede experimentar una disminución en el rendimiento debido al mayor número de compuertas adicionales necesarias para seleccionar las operaciones. | La reducción en el número de compuertas y la segmentación en sub-ALUs pueden mejorar el rendimiento general, aunque la segmentación podría tener un impacto menor en la velocidad de procesamiento. |
+| Claridad del Diseño | Menor claridad debido a la complejidad de la implementación con el CHIP OPZ y múltiples compuertas |  |
+| Flexibilidad | Permite operaciones con Z pero con mayor complejidad en el diseño del CHIP OPZ | Mayor flexibilidad con la segmentación en sub-ALUs que facilita la integración de operaciones más complejas |
+
+### Conclusión
+La Implementación #2 es preferible debido a su mayor modularidad, claridad en el diseño, y mejor manejo de la complejidad mediante la segmentación en sub-ALUs. Aunque la segmentación podría afectar ligeramente la latencia, su capacidad de reducir el número de compuertas y facilitar el mantenimiento y expansión la hace más adecuada para aplicaciones que requieran una ALU con un tercer registro.
 
 ## Conclusión General
 
