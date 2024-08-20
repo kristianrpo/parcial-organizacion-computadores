@@ -92,11 +92,15 @@ El CHIP `OPZ` actúa como un multiplexor de 3 entradas. Dado un selector de dos 
 
 ### ALU General
 
+![image](https://github.com/user-attachments/assets/97d06f81-f423-4ae7-958b-21ba6b4ff988)
+
 Esta es la unidad principal que encapsula dos sub-ALUs: **ALUxy** y **ALUxyz**. Su responsabilidad es coordinar las operaciones sobre las tres entradas X, Y, y Z, utilizando los bits de control mencionados anteriormente.
 
 ### ALUxy
 
 Esta sub-ALU se encarga de procesar las operaciones relacionadas con las entradas X e Y. Aplica las configuraciones de `zx`, `nx`, `zy`, y `ny`, y realiza la operación aritmética o lógica indicada por `f` y `no`. La salida de esta sub-ALU es un valor intermedio que será utilizado por la **ALUxyz**.
+
+![image](https://github.com/user-attachments/assets/1386d3b7-1821-4634-8339-97c51a181839)
 
 #### Proceso Interno de ALUxy:
 1. **Negación de Entradas**: Se preparan las versiones negadas de X e Y utilizando puertas NOT, listas para ser seleccionadas si `nx` o `ny` son activos.
@@ -106,6 +110,8 @@ Esta sub-ALU se encarga de procesar las operaciones relacionadas con las entrada
 ### ALUxyz
 
 Esta sub-ALU toma la salida de **ALUxy** y la combina con la entrada Z. Aquí se decide si se niega la salida de **ALUxy** y si se sumará o restará Z, dependiendo del valor de `sel`. Además, se activan los indicadores de estado `zr` y `ng`.
+
+![image](https://github.com/user-attachments/assets/fd759280-c0b0-4b84-8a23-3462a3e9e04d)
 
 #### Proceso Interno de ALUxyz:
 1. **Negación Condicional de XY**: Dependiendo del bit `xyn`, se selecciona entre la salida directa o la negada de **ALUxy**.
