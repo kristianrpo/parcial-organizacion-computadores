@@ -1,0 +1,33 @@
+CHIP ALUxy {
+    IN  
+        x[16], y[16], z[16],     // 16-bit inputs        
+        zx, nx,                  // control signals for x
+        zy, ny,                  // control signals for y
+        f, no,                   // control signals for operation type and negation
+        sel[2];                  // selector for operations with z
+    OUT 
+        out[16]; // 16-bit output
+ 
+    PARTS:
+        // Set x to 0 if 'zx' is 1
+        Mux16(a=x, b=false, sel=zx, out=xZeroed);
+        // Set y to 0 if 'zy' is 1
+        Mux16(a=y, b=false, sel=zy, out=yZeroed);
+ 
+        // Negate the result of apply 'zx' or 'zy'
+        Not16(in=xZeroed, out=xNegated);
+        Not16(in=yZeroed, out=yNegated);
+ 
+        // Select between the result of apply 'zx' or 'zy' and negated 'x' and 'y' based on 'nx' and 'ny'
+        Mux16(a=xZeroed, b=xNegated, sel=nx, out=xFinal);
+        Mux16(a=yZeroed, b=yNegated, sel=ny, out=yFinal);
+ 
+        // Perform AND or ADD operation based on 'f'
+        And16(a=xFinal, b=yFinal, out=andResult);
+        Add16(a=xFinal, b=yFinal, out=addResult);
+        Mux16(a=andResult, b=addResult, sel=f, out=operationResult);
+ 
+        // Negate the operation result based on 'no'
+        Not16(in=operationResult, out=operationNegated);
+        Mux16(a=operationResult, b=operationNegated, sel=no, out=out);
+}

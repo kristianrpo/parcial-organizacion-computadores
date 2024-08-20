@@ -1,0 +1,35 @@
+CHIP Opz {
+    IN 
+        sel[2],           // Operation selector
+        sub[16],          // Result of the subtraction
+        add[16],          // Result of the addition
+        noChanges[16];    // Result with no changes
+    OUT 
+        out[16];          // Final output
+
+    PARTS:
+        //Flag to indicate whether an operation should be performed (if exist an operation or not)
+        Or(a=sel[0], b=sel[1], out=flagOperation);
+        
+        // Checks if the subtraction should be performed
+        And(a=sel[1], b=flagOperation, out=subSelected);
+        
+        // Checks if the addition should be performed
+        And(a=sel[0], b=flagOperation, out=addSelected);
+        
+        // Determines if no changes should be applied
+        Nor(a=sel[0], b=flagOperation, out=noChangesSelected);
+        
+        // Select substraction result (16 bit) to return from OPZ. If the operation is not the variable will be a bus of 16 bits with 0's
+        And161(a=sub, sel=subSelected, out=subFinal);
+        
+        // Select addition result (16 bits) to return from OPZ. If the operation is not the variable will be a bus of 16 bits with 0's
+        And161(a=add, sel=addSelected, out=addFinal);
+        
+        // Select the result unchanged (16 bits) to return from OPZ.  If the operation is not the variable will be a bus of 16 bits with 0's
+        And161(a=noChanges, sel=noChangesSelected, out=noChangesFinal);
+        
+        // Combines the results to have only one oytput with the selected operation
+        Or16(a=noChangesFinal, b=addFinal, out=tempOut);
+        Or16(a=subFinal, b=tempOut, out=out);
+}

@@ -1,0 +1,40 @@
+CHIP ALUxyz {
+    IN  
+        xy[16], z[16],  // 16-bit inputs       
+        nxy,            // negate the xy input
+	    no,             // negate the output
+        sel[2];         // selector for operations with z
+    OUT 
+        out[16],        // 16-bit output
+        zr,             // zero flag
+        ng;             // negative flag
+    PARTS:
+        // Negate 'xy' input
+        Not16(in=xy, out=xyNegated);
+
+        // Select between 'xy' or 'xyNegated' based on nxy (nxy=sel[1])
+        Mux16(a=xy, b=xyNegated, sel=nxy, out=xyFinal);
+
+        // Define if it is necessary to do an operation or 'z' dont need to be operated
+        Or(a=sel[0],b=sel[1],out=flagOperation);
+
+        // Perform ADD operation (if we need to add or subtract, it is necessary to use ADD operation always)
+        Add16(a=xyFinal, b=z, out=outAdd);
+
+        // Select between the addition operation or leave input 'xy' unchanged  
+        Mux16(a=xy, b=outAdd, sel=flagOperation, out=outOperation);
+
+        // Negate operation
+        Not16(in=outOperation, out=outOperationNegated);
+
+        // Select between the operation or the negate operation based on 'no' (no=sel[1])
+        Mux16(a=outOperation, b=outOperationNegated, sel=no, out=outputFinal);
+
+        // Set flags for zero and negative results
+        Sign(in=outputFinal, out=ng);
+        Or16Way(in=outputFinal, out=orOut);
+        Not(in=orOut, out=zr);
+        
+        // Output the final result
+        And16(a=outputFinal, b=true, out=out);
+}

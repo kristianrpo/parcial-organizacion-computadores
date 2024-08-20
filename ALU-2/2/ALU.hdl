@@ -1,0 +1,18 @@
+CHIP ALU {
+    IN
+        x[16], y[16], z[16],     // 16-bit inputs        
+        zx, nx,                  // control signals for x
+        zy, ny,                  // control signals for y
+        f, no,                   // control signals for operation type and negation
+        sel[2];                  // selector for operations with z
+    OUT 
+        out[16],                 // 16-bit output
+        zr,                      // zero flag
+        ng;                      // negative flag
+
+    PARTS:
+        // ALU that operates XY inputs 
+        ALUxy(x=x, y=y, zx=zx, nx=nx, zy=zy, ny=ny, f=f, no=no, out=outputXY);
+        // ALU that operates the result of ALUxy and z
+        ALUxyz(xy=outputXY, z=z, nxy=sel[1], no=sel[1], sel=sel, out=out, zr=zr, ng=ng);
+}

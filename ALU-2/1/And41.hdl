@@ -1,0 +1,10 @@
+CHIP And41{
+    IN a[4], sel;
+    OUT out[4];
+
+    PARTS:
+        And(a=a[0], b=sel, out=out[0]);
+        And(a=a[1], b=sel, out=out[1]);
+        And(a=a[2], b=sel, out=out[2]);
+        And(a=a[3], b=sel, out=out[3]);
+}

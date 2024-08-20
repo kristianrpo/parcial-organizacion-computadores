@@ -1,0 +1,22 @@
+CHIP And161{
+    IN a[16], sel;
+    OUT out[16];
+
+    PARTS:
+    And(a=a[0], b=sel, out=out[0]);
+    And(a=a[1], b=sel, out=out[1]);
+    And(a=a[2], b=sel, out=out[2]);
+    And(a=a[3], b=sel, out=out[3]);
+    And(a=a[4], b=sel, out=out[4]);
+    And(a=a[5], b=sel, out=out[5]);
+    And(a=a[6], b=sel, out=out[6]);
+    And(a=a[7], b=sel, out=out[7]);
+    And(a=a[8], b=sel, out=out[8]);
+    And(a=a[9], b=sel, out=out[9]);
+    And(a=a[10], b=sel, out=out[10]);
+    And(a=a[11], b=sel, out=out[11]);
+    And(a=a[12], b=sel, out=out[12]);
+    And(a=a[13], b=sel, out=out[13]);
+    And(a=a[14], b=sel, out=out[14]);
+    And(a=a[15], b=sel, out=out[15]);
+}
