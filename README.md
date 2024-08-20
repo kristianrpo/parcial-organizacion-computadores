@@ -2,7 +2,7 @@
 
 ## Introducción
 
-En el contexto del curso nand2tetris, se han implementado dos Unidades Aritmético-Lógicas (ALUs) capaz de operar sobre tres entradas de 16 bits: X, Y, y Z. Estas ALUs extiende las funcionalidades de una ALU tradicional de dos entradas para soportar operaciones adicionales, lo que permite mayor flexibilidad y capacidad de procesamiento.
+En el contexto del curso nand2tetris, se han implementado dos Unidades Aritmético-Lógicas (ALUs) capaz de operar sobre tres entradas de 16 bits: X, Y, y Z. Estas ALUs extienden las funcionalidades de una ALU tradicional de dos entradas para soportar operaciones adicionales, lo que permite mayor flexibilidad y capacidad de procesamiento.
 
 Las operaciones están controladas por diversos bits de control (`zx`, `nx`, `zy`, `ny`, `f`, `no`, `sel`) que permiten configurar las entradas, seleccionar la operación deseada, y manipular el resultado. Además, se incluyen indicadores de estado (`zr`, `ng`) que permiten identificar condiciones específicas del resultado, como si es cero o negativo.
 
@@ -28,7 +28,7 @@ Para esta implementación, lo primero llevado a cabo fué el diseño inicial de 
 
 ![image](https://i.imgur.com/Mz0itqv.jpeg)
 
-Como se puede observar, se definió la ALU con su selector de dos bits y su entrada `z` explicados anteriormente. Esta version extendida del modelo clasico de la ALU busca permitir operaciones adicionales gracias a estos dos nuevos inputs (suma con `z`, resta con `z`, o dejar la salida sin operar con `z`).
+Como se puede observar, se definió la ALU con su selector de dos bits y su entrada `z` explicados anteriormente. Esta versión extendida del modelo clásico de la ALU busca permitir operaciones adicionales gracias a estos dos nuevos inputs (suma con `z`, resta con `z`, o dejar la salida sin operar con `z`).
 
 ### Proceso interno de la ALU
 
@@ -61,8 +61,8 @@ Este flujo asegura que la ALU pueda realizar operaciones complejas con tres entr
 - Entre estas tres compuertas (`AND`, `AND`, y `NOR`), solo una de ellas producirá un 1, determinando cuál operación debe salir del "multiplexor" de 3 entradas (como se comporta el CHIP `OPZ`).
 
 3. **Selección del Output:**
-- Cada bit del resultado (16 bits en total) pasa por una compuerta `AND`.
-- Solo la compuerta `AND` seleccionada en el paso anterior permitirá pasar los valores correctos, mientras que las otras compuertas, al realizar `ANDs` con 0, darán un bus de 16 bits en 0s.
+- Cada bit del resultado (suma, resta o sin cambios) (16 bits en total) pasa por una compuerta `AND161` junto al resultado de la compuerta anterior que determinaba la operación a realizar.
+- Solo la compuerta `AND` o `NOR` seleccionada en el paso anterior (que permitó el paso de un 1) permitirá pasar el bus de 16 bits de la operación correspondiente en la compuerta `AND161`, mientras que las otras compuertas, al realizar `ANDs` con 0s, darán un bus de 16 bits en 0s.
 
 4. **Unificación mediante ORs:**
 - Finalmente, se realiza un `OR` entre las salidas de los buses de 16 bits.
