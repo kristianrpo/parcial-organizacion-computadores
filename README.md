@@ -103,9 +103,12 @@ Esta sub-ALU se encarga de procesar las operaciones relacionadas con las entrada
 ![image](https://github.com/user-attachments/assets/1386d3b7-1821-4634-8339-97c51a181839)
 
 #### Proceso Interno de ALUxy:
-1. **Negación de Entradas**: Se preparan las versiones negadas de X e Y utilizando puertas NOT, listas para ser seleccionadas si `nx` o `ny` son activos.
-2. **Operaciones AND y ADD**: Se calculan ambas operaciones de manera predeterminada. Luego, un multiplexor (MUX) selecciona cuál será la salida en función del bit `f`.
-3. **Negación de la Salida**: Si `no` es activo, la salida seleccionada es invertida.
+
+1. **Función de false en el Mux**: Cuando se introduce false como una de las entradas en el Mux16, esto representa un valor constante de 16 bits de 0. Esencialmente, esto permite que, si el selector (zx o zy) es 1, la salida del Mux sea un valor de 0 para esa entrada (X o Y).
+2. **Uso de Not16**: Posteriormente, se pasa este valor a un Not16 que invierte todos los bits de la salida. Por lo tanto, si el selector es 1, se pasa un valor de 0 que luego se niega para obtener 1111...1111, lo que permite manejar de manera efectiva los bits en la operación posterior.
+3. **Negación de Entradas**: Se preparan las versiones negadas de X e Y utilizando puertas NOT, listas para ser seleccionadas si `nx` o `ny` son activos.
+4. **Operaciones AND y ADD**: Se calculan ambas operaciones de manera predeterminada. Luego, un multiplexor (MUX) selecciona cuál será la salida en función del bit `f`.
+5. **Negación de la Salida**: Si `no` es activo, la salida seleccionada es invertida.
 
 ### Detalle de implementacion para operaciones con el tercer registro (ALUxyz)
 
