@@ -114,7 +114,7 @@ Esta sub-ALU se encarga de procesar las operaciones relacionadas con las entrada
 
 Esta sub-ALU toma la salida de **ALUxy** y la combina con la entrada Z. Aquí se decide si se niega la salida de **ALUxy** y si se sumará o restará Z, dependiendo del valor de `sel`. Además, se activan los indicadores de estado `zr` y `ng`.
 
-![image](https://github.com/user-attachments/assets/fd759280-c0b0-4b84-8a23-3462a3e9e04d)
+![image](https://i.imgur.com/JS48CsD.png)
 
 #### Proceso Interno de ALUxyz:
 1. **Negación Condicional de XY**: Dependiendo del bit `xyn`, se selecciona entre la salida directa o la negada de **ALUxy**.
