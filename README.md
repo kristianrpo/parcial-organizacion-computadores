@@ -156,12 +156,14 @@ La inclusión de un tercer registro en la ALU ofrece ventajas significativas al 
 | --------- | ---------------- | ---------------- |
 | Cantidad de Compuertas | 25  | 21 |
 | Modularidad | Menor modularidad, mayor complejidad en la gestión del tercer registro (Z) | Mayor modularidad, con sub-ALUs separadas (ALUxy y ALUxyz) que facilitan el diseño y mantenimiento |
-| Rendimiento | Puede experimentar una disminución en el rendimiento debido al mayor número de compuertas adicionales necesarias para seleccionar las operaciones. | La reducción en el número de compuertas y la segmentación en sub-ALUs pueden mejorar el rendimiento general, aunque la segmentación podría tener un impacto menor en la velocidad de procesamiento. |
-| Claridad del Diseño | Menor claridad debido a la complejidad de la implementación con el CHIP OPZ y múltiples compuertas |  |
 | Flexibilidad | Permite operaciones con Z pero con mayor complejidad en el diseño del CHIP OPZ | Mayor flexibilidad con la segmentación en sub-ALUs que facilita la integración de operaciones más complejas |
+| Rendimiento | Puede experimentar una disminución en el rendimiento debido al mayor número de compuertas adicionales necesarias para seleccionar las operaciones. | La reducción en el número de compuertas y la segmentación en sub-ALUs pueden mejorar el rendimiento general, aunque la segmentación podría tener un impacto menor en la velocidad de procesamiento |
+| Consumo de Energía | Incrementado debido al mayor número de compuertas y operaciones adicionales | Puede ser más eficiente en comparación, pero aún puede consumir recursos adicionales por las múltiples sub-ALUs y MUX |
+| Claridad del Diseño | Menor claridad debido a la complejidad de la implementación con el CHIP OPZ y múltiples compuertas | Mayor claridad con un diseño modular y segmentado en sub-ALUs que simplifica el seguimiento y la depuración |
+
 
 ### Conclusión
-La Implementación #2 es preferible debido a su mayor modularidad, claridad en el diseño, y mejor manejo de la complejidad mediante la segmentación en sub-ALUs. Aunque la segmentación podría afectar ligeramente la latencia, su capacidad de reducir el número de compuertas y facilitar el mantenimiento y expansión la hace más adecuada para aplicaciones que requieran una ALU con un tercer registro.
+La Implementación #2 es preferible debido a su mayor modularidad, claridad en el diseño, y mejor manejo de la complejidad mediante la segmentación en sub-ALUs. La segmentación podría afectar ligeramente la latencia, pero su capacidad para reducir el número de compuertas y facilitar el mantenimiento y expansión hace que sea más adecuada para aplicaciones que requieran una ALU con un tercer registro. Además, su consumo de energía es menor al ser más eficiente en el uso de recursos.
 
 ## Conclusión General
 
